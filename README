@@ -1,0 +1,31 @@
+Dancer::Middleware::DetectMobileBrowser
+
+This Dancer plack middleware detects mobile browsers and optionally redirects.  The regex used is straight
+from http://detectmobilebrowser.com/.  Thanks to Chad Smith for all his hard work.
+
+To install make the following directories under APPLICATION/lib
+
+Dancer/Middleware
+
+Copy DetectMobileBrowser.pm to APPLICATION/lib/Dancer/Middleware
+
+In your dancer apps config.yaml add the following lines, note the redirect_to and the line following is optional.
+
+plack_middlewares:
+  -
+    - "+Dancer::Middleware::SmartPhoneDetection"
+    - redirect_to
+    - "http://mobile.quispiam.com"
+
+
+DetectMobileBrowser sets an environment variable MOBILE_BROWSER.  This variable can be used in your routes thusly
+
+get '/' => sub {
+	if(request->env->{ MOBILE_BROWSER }) {
+		debug('Smart phone yeah !');
+	} else {
+		debug('Boring standard browser yeah !');
+	}	
+};
+
+Or if the redirect_to variable is set the request will be redirected if the browser is detected to be a mobile browser.

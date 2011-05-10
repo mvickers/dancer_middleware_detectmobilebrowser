@@ -8,7 +8,7 @@ use parent qw(Plack::Middleware);
 sub true  { 1 }
 sub false { 0 }
 
-sub isSmartPhone {
+sub is_smart_phone {
     my $browser = shift;
     
     if 
@@ -24,12 +24,12 @@ sub isSmartPhone {
 
 sub call {
     my($self, $env) = @_;
-    if(isSmartPhone($env->{ HTTP_USER_AGENT}))
+    if(is_smart_phone($env->{ HTTP_USER_AGENT}))
     {
-        $env->{ SMART_PHONE } = "Yes";
+        $env->{ MOBILE_BROWSER } = true;
         return [301, [ Location => $self->{ redirect_to} . $env->{ REQUEST_URI } ], []];
     } else {
-        $env->{ SMART_PHONE } = "No";
+        $env->{ MOBILE_BROWSER } = false;
     }
     $self->app->($env);
 }
