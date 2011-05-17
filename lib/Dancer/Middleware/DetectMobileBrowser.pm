@@ -30,7 +30,9 @@ sub call {
     if(is_mobile_browser($env->{ HTTP_USER_AGENT}))
     {
         $env->{ MOBILE_BROWSER } = true;
-        return [301, [ Location => $self->{ redirect_to} . $env->{ REQUEST_URI } ], []];
+        if(defined($self->{ redirect_to })) {
+            return [301, [ Location => $self->{ redirect_to} . $env->{ REQUEST_URI } ], []];   
+        }
     } else {
         $env->{ MOBILE_BROWSER } = false;
     }
